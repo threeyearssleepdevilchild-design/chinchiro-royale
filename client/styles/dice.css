@@ -1,0 +1,119 @@
+/* ===== 3D Dice Styles ===== */
+.dice-scene {
+    width: 60px;
+    height: 60px;
+    perspective: 600px;
+    display: inline-block;
+    margin: 5px;
+}
+
+.dice-cube {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dice-cube.rolling {
+    animation: spin3d 0.6s infinite linear;
+}
+
+@keyframes spin3d {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateX(360deg) rotateY(720deg) rotateZ(360deg);
+    }
+}
+
+.dice-face {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at center, #fff 0%, #ddd 100%);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+    /* 裏面が見えないように */
+}
+
+/* 各面の配置 */
+.face-front {
+    transform: rotateY(0deg) translateZ(30px);
+}
+
+.face-right {
+    transform: rotateY(90deg) translateZ(30px);
+}
+
+.face-back {
+    transform: rotateY(180deg) translateZ(30px);
+}
+
+.face-left {
+    transform: rotateY(-90deg) translateZ(30px);
+}
+
+.face-top {
+    transform: rotateX(90deg) translateZ(30px);
+}
+
+.face-bottom {
+    transform: rotateX(-90deg) translateZ(30px);
+}
+
+/* ドット配置 */
+.dice-face-inner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-areas: "a b c" "d e f" "g h i";
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+}
+
+.pip {
+    background: #333;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin: auto;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.pip.red {
+    background: #d00;
+    box-shadow: inset 0 1px 2px rgba(100, 0, 0, 0.5);
+}
+
+.pip.big {
+    width: 16px;
+    height: 16px;
+}
+
+/* ===== Flying Chips ===== */
+.flying-chip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-size: 24px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* カード内のダイス表示用（小さめ） */
+.card-dice-container {
+    display: flex;
+    justify-content: center;
+    transform: scale(0.6);
+    /* サイズ調整 */
+    margin-top: -5px;
+}
