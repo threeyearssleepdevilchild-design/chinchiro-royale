@@ -62,11 +62,12 @@ export const GameConfig = {
     MAX_PLAYERS: 8,
     INITIAL_CHIPS: 50000,
     MIN_BET: 1000,
-    MAX_BET: 10000,
+    MAX_BET: Infinity,  // 上限なし（所持チップまでベット可能）
     MAX_REROLL_ATTEMPTS: 3,      // 目なし時の最大振り直し回数
     INTERRUPT_WINDOW_MS: 5000,   // ダウト受付時間（ミリ秒）
     ACTION_TIMEOUT_MS: 15000,    // スキル選択タイムアウト（ミリ秒）
-    ROUNDS_PER_GAME: null        // null = 無制限（チップが尽きるまで）
+    ROUNDS_PER_GAME: null,       // null = 無制限（チップが尽きるまで）
+    SET_BONUS_CHIPS: 100000      // 1セット（親1巡）終了時に全員に加算
 };
 
 

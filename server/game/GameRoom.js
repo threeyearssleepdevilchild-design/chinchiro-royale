@@ -69,6 +69,12 @@ export class GameRoom {
         /** @type {Object} ラウンド結果 */
         this.roundResults = [];
 
+        /** @type {number} 現在のセット番号（親1巡が1セット） */
+        this.currentSet = 1;
+
+        /** @type {number} セット開始時の親インデックス */
+        this.setStartDealerIndex = 0;
+
         /** @type {Date} ルーム作成日時 */
         this.createdAt = new Date();
     }
@@ -911,6 +917,23 @@ export class GameRoom {
         // 破産した親はスキップ
         while (this.getPlayer(this.playerOrder[this.dealerIndex]).isBankrupt()) {
             this.dealerIndex = (this.dealerIndex + 1) % this.playerOrder.length;
+        }
+
+        // ★セット終了判定: 親が1巡したらボーナス加算
+        if (this.dealerIndex === this.setStartDealerIndex) {
+            this.currentSet++;
+
+            // 全員に10万点加算
+            const bonusAmount = GameConfig.SET_BONUS_CHIPS;
+            this.getPlayersArray().forEach(player => {
+                player.addChips(bonusAmount);
+            });
+
+            this.broadcast('set_completed', {
+                setNumber: this.currentSet - 1,
+                bonusAmount,
+                players: this.getPublicPlayersData()
+            });
         }
 
         // 次のラウンドへ

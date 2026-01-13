@@ -614,6 +614,24 @@ socket.on('game_ended', (data) => {
     }
 });
 
+// ★セット完了（親1巡終了）→全員に10万点ボーナス
+socket.on('set_completed', (data) => {
+    console.log('[Game] Set completed:', data);
+
+    ui.showToast(`セット${data.setNumber}終了！全員に ${data.bonusAmount.toLocaleString()} 点ボーナス！`, 'success');
+    ui.logMessage(`セット${data.setNumber}終了！全員に ${data.bonusAmount.toLocaleString()} 点加算`, 'important');
+
+    // 自分のチップを更新
+    const me = data.players.find(p => p.id === socket.id);
+    if (me) {
+        ui.setMyInfo(me);
+    }
+
+    // 他プレイヤーを更新
+    const others = data.players.filter(p => p.id !== socket.id);
+    ui.updateOtherPlayers(others);
+});
+
 // ゲームリセット（再戦）
 socket.on('game_reset', (data) => {
     console.log('[Game] Game reset:', data);
