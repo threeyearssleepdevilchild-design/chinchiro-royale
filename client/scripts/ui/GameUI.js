@@ -405,19 +405,35 @@ export class GameUI {
     }
 
     /**
-     * ベットボタンのイベント設定
+     * ベットボタンのイベント設定（加算式）
      */
     setupBetButtons() {
         const betButtons = document.querySelectorAll('.bet-btn');
         betButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                const amount = btn.dataset.amount === 'MAX' ? 500 : parseInt(btn.dataset.amount);
-                this.currentBet = amount;
-                this.gameElements.betAmount.textContent = amount;
+                const amountStr = btn.dataset.amount;
 
-                // アクティブ状態の切り替え
-                betButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
+                if (amountStr === 'reset') {
+                    // リセット
+                    this.currentBet = 0;
+                } else if (amountStr === 'all') {
+                    // ALL: 自分の所持チップ全額
+                    const myChipsText = this.gameElements.myChips?.textContent || '0';
+                    this.currentBet = parseInt(myChipsText.replace(/,/g, '')) || 0;
+                } else {
+                    // 数値: 加算
+                    const amount = parseInt(amountStr);
+                    this.currentBet += amount;
+
+                    // 所持チップを超えないようにする
+                    const myChipsText = this.gameElements.myChips?.textContent || '0';
+                    const maxChips = parseInt(myChipsText.replace(/,/g, '')) || 0;
+                    if (this.currentBet > maxChips) {
+                        this.currentBet = maxChips;
+                    }
+                }
+
+                this.gameElements.betAmount.textContent = this.currentBet.toLocaleString();
             });
         });
     }

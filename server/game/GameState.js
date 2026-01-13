@@ -60,7 +60,7 @@ export function isValidTransition(from, to) {
 export const GameConfig = {
     MIN_PLAYERS: 2,  // テスト用に2人から開始可能
     MAX_PLAYERS: 8,
-    INITIAL_CHIPS: 25000,
+    INITIAL_CHIPS: 50000,
     MIN_BET: 1000,
     MAX_BET: 10000,
     MAX_REROLL_ATTEMPTS: 3,      // 目なし時の最大振り直し回数

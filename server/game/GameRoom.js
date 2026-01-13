@@ -297,10 +297,33 @@ export class GameRoom {
         // 子全員がベットしたか確認
         const allNonDealersBetted = nonDealers.every(p => p.currentBet > 0);
         if (allNonDealersBetted) {
-            this.startDealerRoll();
+            // ★変更: 子が先にロール、親は最後
+            this.startPlayerRolls();
         }
 
         return true;
+    }
+
+    /**
+     * 子プレイヤーのロール開始（子→親の順番）
+     */
+    startPlayerRolls() {
+        this.changeState(GameState.PLAYER_ROLL);
+        this.currentPlayerIndex = 0;
+
+        const nonDealers = this.getNonDealers();
+        if (nonDealers.length === 0) {
+            // 子がいない場合は親のロールへ
+            this.startDealerRoll();
+            return;
+        }
+
+        this.currentPlayerId = nonDealers[0].id;
+        this.broadcast('player_turn', {
+            playerId: this.currentPlayerId,
+            playerIndex: 0,
+            totalPlayers: nonDealers.length
+        });
     }
 
     /**
@@ -671,12 +694,13 @@ export class GameRoom {
 
         this.broadcast('interrupt_window_closed', {});
 
-        // 次のフェーズへ
+        // ★変更: 子→親の順番なので
+        // 子のロール後は次の子（または親）へ、親のロール後は結果計算へ
         if (rolledPlayer.isDealer) {
-            // 親のロールが終わったら子のターンへ
-            this.startPlayerRolls();
+            // 親のロールが終わったら結果計算へ
+            this.calculateResults();
         } else {
-            // 子のロールが終わったら次の子へ
+            // 子のロールが終わったら次のプレイヤー（子または親）へ
             this.nextPlayerRoll();
         }
     }
@@ -762,8 +786,8 @@ export class GameRoom {
         this.currentPlayerIndex++;
 
         if (this.currentPlayerIndex >= nonDealers.length) {
-            // 全員ロール完了 → 結果計算
-            this.calculateResults();
+            // ★子全員ロール完了 → 親のロールへ
+            this.startDealerRoll();
             return;
         }
 
