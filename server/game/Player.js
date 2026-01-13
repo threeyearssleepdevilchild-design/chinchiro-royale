@@ -83,7 +83,8 @@ export class Player {
      * @returns {boolean} ベットできたかどうか
      */
     placeBet(amount) {
-        if (amount > this.chips) {
+        // 最低額(1000)なら所持金不足でも許可（借金）
+        if (amount > this.chips && amount !== 1000) {
             return false;
         }
         this.currentBet = amount;
