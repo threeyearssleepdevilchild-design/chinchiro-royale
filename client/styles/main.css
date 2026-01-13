@@ -2035,3 +2035,341 @@ body.blur-effect .player-control-panel {
     transform: scale(0.6);
     margin-top: -10px;
 }
+
+/* ===== モバイル対応 (スマートフォン) ===== */
+
+/* スマホ縦画面 */
+@media screen and (max-width: 768px) {
+
+    html,
+    body {
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .screen {
+        position: relative;
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+    }
+
+    /* ゲーム画面レイアウト */
+    #screen-game {
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    /* ゲームログ（モバイルでは折りたためる） */
+    .game-log-panel {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 200px;
+        max-height: 40vh;
+        overflow-y: auto;
+        z-index: 100;
+        background: rgba(0, 0, 0, 0.9);
+        font-size: 12px;
+        transform: translateX(-160px);
+        transition: transform 0.3s ease;
+    }
+
+    .game-log-panel:hover,
+    .game-log-panel:focus-within {
+        transform: translateX(0);
+    }
+
+    .game-log-panel .panel-title {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    /* 他プレイヤーパネル */
+    .other-players-panel {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .other-players-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .player-card {
+        min-width: 80px;
+        max-width: 100px;
+        padding: 5px;
+        font-size: 11px;
+    }
+
+    .player-card .card-name {
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .player-card .card-chips {
+        font-size: 10px;
+    }
+
+    .card-dice-container {
+        transform: scale(0.4);
+        margin-top: -15px;
+        margin-bottom: -15px;
+    }
+
+    /* メインステージ */
+    .main-stage {
+        width: 100%;
+        padding: 10px;
+        flex: 1;
+    }
+
+    .round-info {
+        margin-bottom: 10px;
+    }
+
+    .round-number {
+        font-size: 48px;
+    }
+
+    /* ダイス表示エリア */
+    .dealer-area,
+    .current-player-area {
+        padding: 10px;
+        margin: 5px 0;
+    }
+
+    .dice-display {
+        gap: 5px;
+    }
+
+    .dice-scene {
+        width: 45px !important;
+        height: 45px !important;
+        margin: 3px !important;
+    }
+
+    .dice-face {
+        width: 45px !important;
+        height: 45px !important;
+    }
+
+    .face-front {
+        transform: rotateY(0deg) translateZ(22.5px) !important;
+    }
+
+    .face-right {
+        transform: rotateY(90deg) translateZ(22.5px) !important;
+    }
+
+    .face-back {
+        transform: rotateY(180deg) translateZ(22.5px) !important;
+    }
+
+    .face-left {
+        transform: rotateY(-90deg) translateZ(22.5px) !important;
+    }
+
+    .face-top {
+        transform: rotateX(90deg) translateZ(22.5px) !important;
+    }
+
+    .face-bottom {
+        transform: rotateX(-90deg) translateZ(22.5px) !important;
+    }
+
+    .pip {
+        width: 7px !important;
+        height: 7px !important;
+    }
+
+    .pip.big {
+        width: 12px !important;
+        height: 12px !important;
+    }
+
+    .vs-display {
+        margin: 10px 0;
+    }
+
+    .vs-text {
+        font-size: 24px;
+    }
+
+    /* プレイヤーコントロールパネル */
+    .player-control-panel {
+        width: 100%;
+        padding: 10px;
+        margin-top: auto;
+    }
+
+    .player-info {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .bet-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .bet-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        min-width: 50px;
+    }
+
+    .gold-button.large {
+        padding: 12px 24px;
+        font-size: 14px;
+    }
+
+    /* スキルコントロール */
+    .skill-controls {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .skill-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+
+    /* ロビー画面 */
+    .lobby-container {
+        padding: 15px;
+        width: 95%;
+        max-width: none;
+    }
+
+    .room-info h2 {
+        font-size: 18px;
+    }
+
+    /* タイトル画面 */
+    .title-container {
+        padding: 1rem;
+    }
+
+    .main-title {
+        font-size: 1.5rem;
+    }
+
+    .sub-title {
+        font-size: 0.9rem;
+    }
+
+    .title-form {
+        width: 90%;
+        max-width: 300px;
+    }
+
+    .gold-input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .gold-button {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+}
+
+/* スマホ横画面 */
+@media screen and (max-width: 896px) and (orientation: landscape) {
+
+    html,
+    body {
+        overflow-y: auto;
+        height: auto;
+    }
+
+    .screen {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    #screen-game {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 5px;
+    }
+
+    .game-log-panel {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 150px;
+        max-height: 100vh;
+        font-size: 10px;
+        transform: translateX(-120px);
+    }
+
+    .game-log-panel:hover {
+        transform: translateX(0);
+    }
+
+    .other-players-panel {
+        width: 100%;
+        order: -1;
+    }
+
+    .main-stage {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .player-control-panel {
+        width: 100%;
+    }
+
+    .dice-scene {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .dice-face {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .face-front {
+        transform: rotateY(0deg) translateZ(20px) !important;
+    }
+
+    .face-right {
+        transform: rotateY(90deg) translateZ(20px) !important;
+    }
+
+    .face-back {
+        transform: rotateY(180deg) translateZ(20px) !important;
+    }
+
+    .face-left {
+        transform: rotateY(-90deg) translateZ(20px) !important;
+    }
+
+    .face-top {
+        transform: rotateX(90deg) translateZ(20px) !important;
+    }
+
+    .face-bottom {
+        transform: rotateX(-90deg) translateZ(20px) !important;
+    }
+
+    .round-number {
+        font-size: 36px;
+    }
+}
