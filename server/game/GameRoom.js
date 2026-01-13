@@ -817,7 +817,7 @@ export class GameRoom {
         const results = [];
 
         this.getNonDealers().forEach(player => {
-            const comparison = DiceEngine.compareHands(dealer.currentHand, player.currentHand);
+            const comparison = DiceEngine.compareHands(dealer.currentHand, player.currentHand, true);
 
             let chipTransfer = 0;
             let multiplier = 1;
@@ -844,14 +844,18 @@ export class GameRoom {
 
             // チップ移動計算
             const baseBet = player.currentBet;
+
+            // 親と子の倍率を掛け合わせる
+            const dealerMult = DiceEngine.getMultiplier(dealer.currentHand, true);
+            const playerMult = DiceEngine.getMultiplier(player.currentHand, false);
+            const totalMult = dealerMult * playerMult;
+
             if (comparison.winner === 'dealer') {
-                const winMult = DiceEngine.getMultiplier(dealer.currentHand, true);
-                chipTransfer = Math.floor(baseBet * winMult * multiplier);
+                chipTransfer = Math.floor(baseBet * totalMult * multiplier);
                 player.removeChips(chipTransfer);
                 dealer.addChips(chipTransfer);
             } else if (comparison.winner === 'player') {
-                const winMult = DiceEngine.getMultiplier(player.currentHand, false);
-                chipTransfer = Math.floor(baseBet * winMult * multiplier);
+                chipTransfer = Math.floor(baseBet * totalMult * multiplier);
                 dealer.removeChips(chipTransfer);
                 player.addChips(chipTransfer);
             }

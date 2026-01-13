@@ -37,7 +37,7 @@ export const Multiplier = {
     [HandType.SHIGORO]: { dealer: 2, player: 2 },
     [HandType.NORMAL]: { dealer: 1, player: 1 },
     [HandType.MENASHI]: { dealer: 1, player: 1 },
-    [HandType.HIFUMI]: { dealer: 1, player: 1 }
+    [HandType.HIFUMI]: { dealer: 2, player: 2 } // ヒフミは2倍付け/2倍払い
 };
 
 export class DiceEngine {
@@ -107,32 +107,30 @@ export class DiceEngine {
             };
         }
 
-        // ゾロ目判定
-        if (d1 === d2 && d2 === d3) {
-            // ピンゾロ (1,1,1) - 最強
-            if (d1 === 1) {
-                return {
-                    type: HandType.PINZORO,
-                    value: 1,
-                    rank: HandRank[HandType.PINZORO],
-                    dice: sorted,
-                    displayName: 'ピンゾロ'
-                };
-            }
-            // その他のアラシ
+        // ピンゾロ (1,1,1)
+        if (d1 === 1 && d2 === 1 && d3 === 1) {
             return {
-                type: HandType.ARASHI,
-                value: d1,
-                rank: HandRank[HandType.ARASHI] + d1,
+                type: HandType.PINZORO,
+                value: 1,
+                rank: HandRank[HandType.PINZORO],
                 dice: sorted,
-                displayName: `${d1}のアラシ`
+                displayName: 'ピンゾロ'
             };
         }
 
-        // 通常の目判定（2つ同じで残りが目）
-        // パターン: (a, a, b) または (a, b, b)
-        if (d1 === d2) {
-            // 最初の2つが同じ → 3番目が目
+        // アラシ (ゾロ目)
+        if (d1 === d2 && d2 === d3) {
+            return {
+                type: HandType.ARASHI,
+                value: d1,
+                rank: HandRank[HandType.ARASHI] + d1, // 目の大きさで強弱あり？通常はアラシ同士は引き分けだが、ここでは数値も加味
+                dice: sorted,
+                displayName: `アラシ(${d1})`
+            };
+        }
+
+        // 通常の目 (2つ同じ)
+        if (d1 === d2) { // [X, X, Y] -> Y
             return {
                 type: HandType.NORMAL,
                 value: d3,
@@ -141,14 +139,22 @@ export class DiceEngine {
                 displayName: `${d3}の目`
             };
         }
-        if (d2 === d3) {
-            // 後ろ2つが同じ → 最初が目
+        if (d2 === d3) { // [X, Y, Y] -> X
             return {
                 type: HandType.NORMAL,
                 value: d1,
                 rank: HandRank[HandType.NORMAL] + d1,
                 dice: sorted,
                 displayName: `${d1}の目`
+            };
+        }
+        if (d1 === d3) { // [X, Y, X] -> Y (ソート済みなのでありえないが念のため)
+            return {
+                type: HandType.NORMAL,
+                value: d2,
+                rank: HandRank[HandType.NORMAL] + d2,
+                dice: sorted,
+                displayName: `${d2}の目`
             };
         }
 
@@ -166,11 +172,13 @@ export class DiceEngine {
      * 2つの役を比較する
      * @param {HandResult} hand1 - 親の役
      * @param {HandResult} hand2 - 子の役
+     * @param {boolean} forceResolution - trueの場合、目なしでも勝敗を強制決定する（デフォルトfalse）
      * @returns {CompareResult} 比較結果
      */
-    static compareHands(hand1, hand2) {
+    static compareHands(hand1, hand2, forceResolution = false) {
         // 目なしの場合は特別処理（振り直し扱い）
-        if (hand1.type === HandType.MENASHI || hand2.type === HandType.MENASHI) {
+        // forceResolution が true の場合は無視してランク比較へ
+        if (!forceResolution && (hand1.type === HandType.MENASHI || hand2.type === HandType.MENASHI)) {
             return {
                 winner: null,
                 reason: 'menashi',
