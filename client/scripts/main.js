@@ -14,19 +14,67 @@ const socket = io();
 let myInfo = null;
 let roomInfo = null;
 
-// ===== 接続イベント =====
+socket.on('disconnect', () => {
+    console.log('[Socket] Disconnected');
+    ui.showToast('サーバーとの接続が切れました。再接続を試みています...', 'error');
+
+    // 再接続オーバーレイを表示
+    showReconnectOverlay();
+});
+
+// 再接続成功時
 socket.on('connect', () => {
     console.log('[Socket] Connected:', socket.id);
     if (typeof ui !== 'undefined') {
         ui.setLobbyMessage('サーバーに接続しました。');
-        ui.mySocketId = socket.id; // ★GameUIに通知
+        ui.mySocketId = socket.id;
+    }
+
+    // 再接続オーバーレイを非表示
+    hideReconnectOverlay();
+
+    // ゲーム中だった場合、再接続を試みる
+    if (myInfo && roomInfo) {
+        console.log('[Socket] Attempting reconnect to game...');
+        socket.emit('reconnect_attempt', { playerId: myInfo.id }, (response) => {
+            if (response.success) {
+                console.log('[Socket] Reconnected to game successfully');
+                ui.showToast('ゲームに再接続しました', 'success');
+                roomInfo = response.room;
+                myInfo = response.player;
+            } else {
+                console.log('[Socket] Reconnect failed:', response.error);
+                ui.showToast('再接続に失敗しました: ' + response.error, 'error');
+            }
+        });
     }
 });
 
-socket.on('disconnect', () => {
-    console.log('[Socket] Disconnected');
-    ui.showToast('サーバーとの接続が切れました', 'error');
-});
+// 再接続オーバーレイ表示
+function showReconnectOverlay() {
+    let overlay = document.getElementById('reconnect-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'reconnect-overlay';
+        overlay.className = 'reconnect-overlay';
+        overlay.innerHTML = `
+            <div class="reconnect-content">
+                <div class="reconnect-spinner"></div>
+                <h2>接続が切れました</h2>
+                <p>再接続を試みています...</p>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+    }
+    overlay.style.display = 'flex';
+}
+
+function hideReconnectOverlay() {
+    const overlay = document.getElementById('reconnect-overlay');
+    if (overlay) {
+        overlay.style.display = 'none';
+    }
+}
 
 socket.on('error', (data) => {
     console.error('[Socket] Error:', data);

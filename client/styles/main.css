@@ -2373,3 +2373,58 @@ body.blur-effect .player-control-panel {
         font-size: 36px;
     }
 }
+
+/* ===== 再接続オーバーレイ ===== */
+.reconnect-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.reconnect-content {
+    text-align: center;
+    color: var(--color-gold);
+}
+
+.reconnect-content h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.reconnect-content p {
+    font-size: 14px;
+    color: var(--color-gray);
+}
+
+.reconnect-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--color-gray-dark);
+    border-top: 4px solid var(--color-gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== マイナスチップ表示 ===== */
+.chips-display.negative,
+.card-chips.negative {
+    color: var(--color-red) !important;
+}

@@ -68,14 +68,11 @@ export class Player {
     }
 
     /**
-     * チップを減らす
+     * チップを減らす（マイナスも許可）
      * @param {number} amount 
-     * @returns {boolean} 減らせたかどうか
+     * @returns {boolean} 常にtrue（マイナスも許可）
      */
     removeChips(amount) {
-        if (this.chips < amount) {
-            return false;
-        }
         this.chips -= amount;
         return true;
     }
