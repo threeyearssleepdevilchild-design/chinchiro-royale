@@ -429,13 +429,10 @@ export class GameUI {
                     const myChipsText = this.gameElements.myChips?.textContent || '0';
                     const maxChips = parseInt(myChipsText.replace(/,/g, '')) || 0;
 
-                    if (this.currentBet > maxChips) {
-                        // 所持金不足でも1000ベット（最低額）なら許可
-                        if (maxChips < 1000) {
-                            this.currentBet = 1000;
-                        } else {
-                            this.currentBet = maxChips;
-                        }
+                    // ベット上限: 所持金 または 50000（借金枠）
+                    const limit = Math.max(maxChips, 50000);
+                    if (this.currentBet > limit) {
+                        this.currentBet = limit;
                     }
                 }
 

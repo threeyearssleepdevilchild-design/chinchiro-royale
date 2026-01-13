@@ -849,6 +849,7 @@ export class GameRoom {
             const dealerMult = DiceEngine.getMultiplier(dealer.currentHand, true);
             const playerMult = DiceEngine.getMultiplier(player.currentHand, false);
             const totalMult = dealerMult * playerMult;
+            console.log(`[Result] ${dealer.name}(${dealer.currentHand.displayName} x${dealerMult}) vs ${player.name}(${player.currentHand.displayName} x${playerMult}) -> x${totalMult}`);
 
             if (comparison.winner === 'dealer') {
                 chipTransfer = Math.floor(baseBet * totalMult * multiplier);
