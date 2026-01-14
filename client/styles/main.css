@@ -77,8 +77,36 @@ body {
     align-items: center;
     justify-content: center;
     background:
-        radial-gradient(ellipse at center, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
-        radial-gradient(ellipse at center, var(--color-dark-purple) 0%, var(--color-black) 70%);
+        radial-gradient(ellipse at center, rgba(139, 0, 0, 0.4) 0%, transparent 70%),
+        radial-gradient(circle at center, var(--color-dark-purple) 0%, var(--color-black) 90%);
+}
+
+.logo-container {
+    width: 100%;
+    max-width: 600px;
+    /* 画像のサイズに合わせて調整 */
+    margin: 0 auto 2rem;
+    padding: 0 1rem;
+    animation: logoEntrance 1s ease-out forwards;
+}
+
+#top-logo {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+}
+
+@keyframes logoEntrance {
+    0% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .title-container {
@@ -86,78 +114,7 @@ body {
     padding: 2rem;
 }
 
-.title-decoration {
-    width: 300px;
-    height: 2px;
-    background: var(--color-gold-gradient);
-    margin: 1rem auto;
-    position: relative;
-}
 
-.title-decoration::before,
-.title-decoration::after {
-    content: '◆';
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--color-gold);
-    font-size: 0.8rem;
-}
-
-.title-decoration::before {
-    left: -20px;
-}
-
-.title-decoration::after {
-    right: -20px;
-}
-
-.main-title {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    margin: 2rem 0;
-}
-
-.title-kanji {
-    font-size: 3rem;
-    font-weight: 900;
-    background: var(--color-gold-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: none;
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
-    letter-spacing: 0.5em;
-}
-
-.title-sub {
-    font-family: var(--font-display);
-    font-size: 1.2rem;
-    letter-spacing: 0.8em;
-    color: var(--color-gold-light);
-    opacity: 0.8;
-}
-
-.title-main {
-    font-family: var(--font-display);
-    font-size: 4rem;
-    font-weight: 900;
-    background: var(--color-gold-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
-    letter-spacing: 0.2em;
-}
-
-.title-tagline {
-    font-size: 1rem;
-    color: var(--color-gold-dark);
-    letter-spacing: 0.3em;
-    margin: 1rem 0 2rem;
-}
 
 .title-menu {
     display: flex;
