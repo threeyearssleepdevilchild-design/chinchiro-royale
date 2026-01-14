@@ -81,7 +81,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: var(--color-cream);
+    background: var(--color-white);
     overflow-y: auto;
 }
 
